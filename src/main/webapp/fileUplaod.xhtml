@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+</h:head>
+
+<h:body>
+	<div class="card">
+		<h:form>
+			<p:growl id="messages" showDetail="true" />
+
+			<p:fileUpload mode="advanced" multiple="false" sizeLimit="10240000"
+				allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+				invalidSizeMessage="Maximum file size allowed is 10240000 KB"
+				invalidFileMessage="only gif | jpg | jpeg | png is allowed"
+				update="messages ouputpanel"
+				listener="#{cropUploaderBean.handleFileUpload}" />
+
+			<p:outputPanel id="ouputpanel">
+
+				<div id="imageWrapper"
+					style="width: fir-content; height: fit-content; margin: auto; overflow: scroll; position: relative;">
+					<p:graphicImage id="myImage" cache="false"
+						rendered="#{not empty cropUploaderBean.originalImageFile}"
+						value="#{cropUploaderBean.image}" />
+				</div>
+
+
+				<pe:imageAreaSelect id="areaSelect" for="myImage"
+					widgetVar="areaSelectWidget" autoHide="true" handles="false"
+					movable="false" persistent="false" resizable="false"
+					parentSelector="#imageWrapper">
+					<p:ajax event="selectEnd"
+						listener="#{cropUploaderBean.selectEndListener}" update="messages" />
+				</pe:imageAreaSelect>
+			</p:outputPanel>
+		</h:form>
+	</div>
+</h:body>
+</html>
